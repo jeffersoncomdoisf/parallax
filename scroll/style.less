@@ -59,14 +59,13 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
-a{
-	text-decoration:none;
-}
 a:link, a:visited{
 	color:#373435;
+	text-decoration:none;
 }
 a:hover{
 	color:#554455;
+	text-decoration:none;
 }
 body{
 	margin:0;
@@ -96,7 +95,7 @@ html, body {
 } /* must be same height as the footer */
 #footer {
 	position: relative;
-	margin-top:-@main-paddingBottom;
+	margin-top:@main-paddingBottom;
 	height:@main-paddingBottom;
 	clear:both;
 }
@@ -110,5 +109,35 @@ body:before {
 }
 
 /*
- * @title
+ * @title Parallax Scroll
+ * @param Styles of page @title
  */
+.box{
+	border:gray solid 1px;
+	width:1900px;
+	height:1080px;
+}
+#target-1{
+	background: #E8E8E8;
+}
+#target-2{
+	background: #C1C4B9;
+}
+#target-1 a{
+	color:blue;
+}
+#target-2 a{
+	color:red;
+}
+ul{
+	width:200px;
+	height:200px;
+	margin:400px auto;
+	position:fixed;
+}
+ul li{
+	margin-top:30px;
+}
+a{
+	font-size:20px;
+}
