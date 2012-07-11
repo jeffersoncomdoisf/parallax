@@ -1,0 +1,74 @@
+/*
+Theme Name: 
+Theme URI: 
+Author: 
+Author URI: 
+Description: 
+Version: 1.0
+License: GNU General Public License
+Tags: 
+*/
+
+/* Reset */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+
+a{
+	text-decoration:none;
+}
+a:link, a:visited{
+	color:#373435;
+}
+a:hover{
+	color:#554455;
+}
+body{
+	margin:0;
+	padding:0;
+	font-family: Arial;
+}
+
+/*
+ * @title Variáveis window browser
+ */
+@window-height: 100%;
+@window-overflow: auto;
+@main-paddingBottom: 150px;
+
+html, body {
+	height:@window-height;
+}
+#wrap {
+	width:1000px;
+	margin:0 auto;
+	min-height:@window-height;
+}
+#main {
+	float:none;
+	overflow:@window-overflow;
+	padding-bottom:@main-paddingBottom;
+} /* must be same height as the footer */
+#footer {
+	position: relative;
+	margin-top:-@main-paddingBottom;
+	height:@main-paddingBottom;
+	clear:both;
+}
+/* Opera Fix */
+body:before {
+	content:"";
+	height:@window-height;
+	float:left;
+	width:0;
+	margin-top:-32767px;
+}
+
+/* Styles */
+
+#parallax {
+	width: 800px;
+	height: 400px;
+	margin: 100px auto 0 auto;
+	border: 3px dashed gray;
+	overflow: hidden;
+	background: #ccc;
+}

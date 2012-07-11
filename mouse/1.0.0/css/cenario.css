@@ -60,84 +60,105 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 a:link, a:visited{
-	color:#373435;
-	text-decoration:none;
+	color:#373435;	
 }
 a:hover{
 	color:#554455;
-	text-decoration:none;
 }
 body{
 	margin:0;
 	padding:0;
 	font-family: Arial;
 }
-
-/*
- * @title Variáveis window browser
- */
-@window-height: 100%;
-@window-overflow: auto;
-@main-paddingBottom: 150px;
-
 html, body {
-	height:@window-height;
+	height: 100%;
 }
 #wrap {
 	width:1010px;
 	margin:0 auto;
-	min-height:@window-height;
+	min-height: 100%;
 }
 #main {
 	float:none;
-	overflow:@window-overflow;
-	padding-bottom:@main-paddingBottom;
+	overflow:;
+	margin-bottom:;
+	padding-bottom:;
 } /* must be same height as the footer */
 #footer {
 	position: relative;
-	margin-top:@main-paddingBottom;
-	height:@main-paddingBottom;
+	margin-top:;
+	height:;
 	clear:both;
 }
 /*Opera Fix*/
 body:before {
 	content:"";
-	height:@window-height;
+	height:100%;
 	float:left;
 	width:0;
-	margin-top:-32767px;
+	margin-top:;
+}
+#h{
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	margin:0 auto;
+	position:relative;
+}
+#text{
+	position:absolute;
+	top:0;
+	left:0;
+	float:left;
+	z-index:1000;
 }
 
 /*
- * @title Parallax Scroll
- * @param Styles of page @title
+ * @title Cenário
  */
-.box{
-	border:gray solid 1px;
-	width:1900px;
-	height:1080px;
+
+.arvore{
+	background:transparent url(../images/arvore.png) no-repeat;
+	position:absolute;
+	top:100px;
+	left:500px;
+	width:690px;
+	height:1068px;
+	z-index:5;
 }
-#target-1{
-	background: #E8E8E8;
+.nuvens{
+	background:transparent url(../images/nuvens.png) no-repeat top right;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	z-index:3;
 }
-#target-2{
-	background: #C1C4B9;
+.sol{
+	background:transparent url(../images/sol.png) no-repeat top right;
+	position:absolute;
+	top:0px;
+	left:400px;
+	width:393px;
+	height:393px;
+	z-index:0;
 }
-#target-1 a{
-	color:blue;
+.gramado{
+	background:transparent url(../images/gramado.png) repeat-x bottom left;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:1920px;
+	height:100%;
+	z-index:2;
 }
-#target-2 a{
-	color:red;
-}
-ul{
-	width:200px;
-	height:200px;
-	margin:400px auto;
-	position:fixed;
-}
-ul li{
-	margin-top:30px;
-}
-a{
-	font-size:20px;
+.montanhas{
+	background:transparent url(../images/montanhas.png) repeat-x bottom left;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	z-index:1;
 }

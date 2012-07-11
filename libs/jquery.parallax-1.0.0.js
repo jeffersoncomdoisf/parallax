@@ -7,20 +7,6 @@
 */
 
 (function($){
-	$.fn.parallaxScroll = function( settings){
-		// settings
-		var config = {
-			'speed': 'medium'
-		};
-		if( settings)
-			$.extend( config, settings );
-		
-		// functions
-
-		return this.each(function(){
-			
-		});
-	}; // parallaxScroll();
 	$.fn.parallaxMouse = function( settings){
 		// settings
 		var config = {

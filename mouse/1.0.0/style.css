@@ -60,84 +60,83 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 a:link, a:visited{
-	color:#373435;
-	text-decoration:none;
+	color:#373435;	
 }
 a:hover{
 	color:#554455;
-	text-decoration:none;
 }
 body{
 	margin:0;
 	padding:0;
 	font-family: Arial;
 }
-
-/*
- * @title Variáveis window browser
- */
-@window-height: 100%;
-@window-overflow: auto;
-@main-paddingBottom: 150px;
-
 html, body {
-	height:@window-height;
+	height: 100%;
 }
 #wrap {
 	width:1010px;
 	margin:0 auto;
-	min-height:@window-height;
+	min-height: 100%;
 }
 #main {
 	float:none;
-	overflow:@window-overflow;
-	padding-bottom:@main-paddingBottom;
+	overflow:;
+	margin-bottom:;
+	padding-bottom:;
 } /* must be same height as the footer */
 #footer {
 	position: relative;
-	margin-top:@main-paddingBottom;
-	height:@main-paddingBottom;
+	margin-top:;
+	height:;
 	clear:both;
 }
 /*Opera Fix*/
 body:before {
 	content:"";
-	height:@window-height;
+	height:100%;
 	float:left;
 	width:0;
-	margin-top:-32767px;
+	margin-top:;
+}
+#h{
+	width:1000px;
+	height:700px;
+	margin:100px auto;
+	position:relative;
 }
 
 /*
- * @title Parallax Scroll
- * @param Styles of page @title
+ * @title Body and Content
  */
-.box{
-	border:gray solid 1px;
-	width:1900px;
-	height:1080px;
+
+#text{
+	float:left;
+	margin-top:300px;
 }
-#target-1{
-	background: #E8E8E8;
-}
-#target-2{
-	background: #C1C4B9;
-}
-#target-1 a{
-	color:blue;
-}
-#target-2 a{
-	color:red;
-}
-ul{
-	width:200px;
+.plx-1{
+	position: absolute;
+	top:25px;
+	left:25px;
+	width:400px;
 	height:200px;
-	margin:400px auto;
-	position:fixed;
+	background:green;
+	z-index: 2;
 }
-ul li{
-	margin-top:30px;
+.plx-1_1{
+	position:absolute;
+	top:0;
+	width:450px;
+	height:250px;
+	background:blue;
+	z-index: 1;
 }
-a{
-	font-size:20px;
+.plx-2{
+	position:absolute;
+	top:150px;
+	left:225px;
+	left:center;
+	width:1000px;
+	height:50px;
+	background:red;
+	z-index: 3;
 }
