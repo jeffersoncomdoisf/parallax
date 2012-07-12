@@ -63,12 +63,16 @@ body:before {
 }
 
 /* Styles */
-
-#parallax {
+.parallax {
+	position: relative;
 	width: 800px;
 	height: 400px;
-	margin: 100px auto 0 auto;
-	border: 3px dashed gray;
 	overflow: hidden;
-	background: #ccc;
+	border: 1px solid gray;
+	border-radius: 20px;
+	margin: 100px auto;
+	box-shadow: 0 0 15px gray;
+	img {
+		position: absolute;
+	}
 }

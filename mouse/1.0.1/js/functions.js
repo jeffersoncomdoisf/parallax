@@ -1,5 +1,6 @@
 /* plugin */
 (function($){})(jQuery);
 
-/* ready */
-jQuery(document).ready(function($){});
+jQuery(document).ready(function($){
+	$('.parallax').parallaxMouse();
+});
