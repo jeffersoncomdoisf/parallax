@@ -2,5 +2,5 @@
 (function($){})(jQuery);
 
 jQuery(document).ready(function($){
-	$('.parallax').parallaxMouse();
+	$.parallaxMouse();
 });
