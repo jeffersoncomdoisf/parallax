@@ -2,7 +2,7 @@
 /*
  * Criado por: Jefferson William
  * Nome do Plugin: Parallax
- * Versão: 1.1.1
+ * Versão: 1.1.2
  * Data de criação do plugin: 12/07/2012
  * Última atualização: 15/07/2012
  */
