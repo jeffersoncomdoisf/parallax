@@ -16,8 +16,10 @@
             fx: 'fade',
             delay: 3000,
             fxSpeed: 500,
+            move: true,
             marginHoriz: 0,
-            marginVert: 0
+            marginVert: 0,
+            align: 'center'
         };
 
         if(settings) { $.extend(config, settings); }
@@ -29,13 +31,15 @@
             i = 0;
 
         // Inicializando as variáveis
-        area = $(config.area);
+        area = typeof( $(config.area)) == 'object' && $(config.area).offset() != null ?
+            $(config.area) :
+            alert("Objeto area não encontrado.");
         area.width = area.width();
         area.height = area.height();
         area.posx = area.offset().left;
         area.posy = area.offset().top;
 
-        img = area.find(config.layer);
+        img = $(config.layer);
         img.count = img.length;
 
         // Centralizar imagens
@@ -60,16 +64,16 @@
             var vertical    = (mouse.posy >= area.offsetTop && mouse.posy <= area.offsetBottom) ? true : false;
 
             // Verificando se o mouse está sobre a área
-            if(horizontal && vertical)
-                return true;
-            else
-                return false;
+            return horizontal && vertical ? true : false;
         };
 
         // Configurações do slide show
         var slideshow = {
             init: function() {
                 // O que fazer antes de começar o slide show
+                img.hide();
+                img.eq(0).show();
+
                 slideshow.run();
             },
             run: function() {
@@ -84,10 +88,31 @@
             }
         };
 
-        // Centralizando imagens
-        centralize_imgs();
+        // Configurações referente ao mover da layer
+        var move = {
+            init: function() {
+                var validate_direction;
+                // Se for mover a layer mesmo não espeficicando a direção
+                if(config.move != false) {
+                    validate_direction = true;
+                } else {
+                    // Se não for mover a layer
+                    // Zerar variáveis de movimento
+                    img.move_posx = 0;
+                    img.move_posy = 0;
+                    validate_direction = false;
+                }
+                return { value: validate_direction };
+            }
+        };
 
-        // Iniciando  o slide show
+        move.init();
+
+        if(move.init().value && config.align == 'center') {
+            // Centralizando imagens
+            centralize_imgs();
+        }
+
         slideshow.init();
 
         return $(document).mousemove( function(e) {
@@ -114,23 +139,26 @@
                     img.cssLeft = parseInt( $(this).css('left'));
                     img.cssTop = parseInt( $(this).css('top'));
 
-                    // Encontrar a área de sobra da imagem
-                    img.width_out = (area.width - img.width) + config.marginHoriz;
-                    img.height_out = (area.height - img.height) + config.marginVert;
+                    // Configurações para mover o objeto
+                    if( move.init().value ) {
+                        // Encontrar a área de sobra da imagem
+                        img.width_out = (area.width - img.width) + config.marginHoriz;
+                        img.height_out = (area.height - img.height) + config.marginVert;
 
-                    // Quantos % vou mover a imagem de acordo com o movimento do mouse
-                    img.move_posx = img.width_out * (area.mouse_posx_percent / 100);
-                    img.move_posy = img.height_out * (area.mouse_posy_percent / 50);
-
-                    // Mover a imagem até a posição do mouse levemente
-                    $(this).animate({
-                        left: img.move_posx + 'px',
-                        top: img.move_posy + 'px',
-                    }, {
-                        duration: 50,
-                        queue: false,
-                        easing: 'linear'
-                    });
+                        // Quantos % vou mover a imagem de acordo com o movimento do mouse
+                        img.move_posx = img.width_out * (area.mouse_posx_percent / 100);
+                        img.move_posy = img.height_out * (area.mouse_posy_percent / 50);
+                                                
+                        // Mover a imagem até a posição do mouse levemente
+                        $(this).animate({
+                            left: img.move_posx + 'px',
+                            top: img.move_posy + 'px',
+                        }, {
+                            duration: 50,
+                            queue: false,
+                            easing: 'linear'
+                        });
+                    }
                 });
             }
         });
