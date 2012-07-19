@@ -24,135 +24,148 @@
 
         if(settings) { $.extend(config, settings); }
 
-        // Variáveis globais
-        var mouse = {},
-            area = {},
-            img = {},
-            i = 0;
+        // Realizando validação do objeto area
+        var area;
+        area = $(config.area);
+        if(typeof(area) !== 'object' || area.offset() === null) alert('Objeto area não encontrado.');
 
         // Inicializando as variáveis
-        area = typeof( $(config.area)) == 'object' && $(config.area).offset() != null ?
-            $(config.area) :
-            alert("Objeto area não encontrado.");
-        area.width = area.width();
-        area.height = area.height();
-        area.posx = area.offset().left;
-        area.posy = area.offset().top;
+        var area_width = area.width(),
+            area_height = area.height(),
+            area_posx = area.offset().left,
+            area_posy = area.offset().top,
+            area_offsetTop = area_posy,
+            area_offsetRight = area_posx + area_width,
+            area_offsetBottom = area_posy + area_height,
+            area_offsetLeft = area_posx;
 
-        img = $(config.layer);
-        img.count = img.length;
+        var layer = $(config.layer),
+            layer_count = layer.length,
+            layer_move_validate = true,
+            layer_move_posx = 0,
+            layer_move_posy = 0;
+
+        var mouse_posx = 0,
+            mouse_posy = 0;
+
+        var $document = $(document),
+            global = {},
+            _i = 0;
 
         // Centralizar imagens
-        function centralize_imgs() {
-            img.each(function() {
-                $(this).css({
-                    left: Math.round( ( area.width - $(this).width()) / 2),
-                    top: Math.round( ( area.height - $(this).height()) / 2)
-                });
+        function CentralizeLayers(layer) {
+            var cssPos = {},
+                _layer;
+            layer.each(function(){
+                _layer = $(this);
+                cssPos.left = Math.round((area_width - _layer.width()) / 2);
+                cssPos.top = Math.round((area_height - _layer.height()) / 2);
+                _layer.css(cssPos);
             });
         }
 
-        // Mapeando a área de movimento do mouse
-        var map_area = function() {
-            // Obtendo as posições da área
-            area.offsetTop      = area.posy;
-            area.offsetRight    = area.posx + area.width;
-            area.offsetBottom   = area.posy + area.height;
-            area.offsetLeft     = area.posx;
-
-            var horizontal  = (mouse.posx >= area.offsetLeft && mouse.posx <= area.offsetRight) ? true : false;
-            var vertical    = (mouse.posy >= area.offsetTop && mouse.posy <= area.offsetBottom) ? true : false;
-
-            // Verificando se o mouse está sobre a área
-            return horizontal && vertical ? true : false;
-        };
-
         // Configurações do slide show
-        var slideshow = {
-            init: function() {
-                // O que fazer antes de começar o slide show
-                img.hide();
-                img.eq(0).show();
+        var SlideShow = function(layer, config){
+            this.layer = layer;
+            this.fx = config.fx;
+            this.fxSpeed = config.fxSpeed;
+            this.delay = config.delay;
+            this.count = layer_count;
 
-                slideshow.run();
-            },
-            run: function() {
-                // Rodando slide show
-                if('fade' === config.fx) {
-                    setInterval( function(){
-                        img.eq( i ).fadeOut(config.fxSpeed);
-                        i = (i + 1 == img.count) ? 0 : i + 1;
-                        img.eq( i ).fadeIn(config.fxSpeed);
-                    }, config.delay );
+            // O que fazer antes de começar o slide show
+            this.init = function(){
+                this.layer.hide();
+                this.layer.eq(0).show();
+            };
+            // Rodar slide show
+            this.run = function(){
+                if('fade' === this.fx){
+                    setInterval(function(){
+                        alert(_i);
+                        this.layer.eq(_i).fadeOut(this.fxSpeed);
+                        _i = (_i + 1 === this.count) ?
+                            0 :
+                            _i + 1;
+                        this.layer.eq(_i).fadeIn(this.fxSpeed);
+                    },
+                    this.delay);
                 }
-            }
+            };
         };
 
         // Configurações referente ao mover da layer
-        var move = {
-            init: function() {
-                var validate_direction;
-                // Se for mover a layer mesmo não espeficicando a direção
-                if(config.move != false) {
-                    validate_direction = true;
-                } else {
-                    // Se não for mover a layer
-                    // Zerar variáveis de movimento
-                    img.move_posx = 0;
-                    img.move_posy = 0;
-                    validate_direction = false;
-                }
-                return { value: validate_direction };
+        var Move = function(move){
+            this.validate = true;
+
+            // Se não for mover a layer
+            if(move === false){
+                // Zerar variáveis de movimento
+                layer_move_posx = 0;
+                layer_move_posy = 0;
+
+                this.validate = false;
             }
+
+            return this.validate;
         };
 
-        move.init();
+        // Mapeando a área de movimento do mouse
+        var MapArea = function(){
+            // Verificando se o mouse está sobre a área
+            return  ((mouse_posx >= area_offsetLeft && mouse_posx <= area_offsetRight) &&
+                    (mouse_posy >= area_offsetTop && mouse_posy <= area_offsetBottom)) ?
+                        true : false;
+        };
 
-        if(move.init().value && config.align == 'center') {
-            // Centralizando imagens
-            centralize_imgs();
+        if(global.move && config.align === 'center') {
+            // Centralizando layers
+            CentralizeLayers(layer);
         }
 
-        slideshow.init();
+        global.move = new Move(config.move);
+        global.slideshow = new SlideShow(layer, config);
 
-        return $(document).mousemove( function(e) {
+        global.slideshow.init();
+        global.slideshow.run();
+
+        return $document.mousemove(function(e){
             // Pegando as posições do mouse e jogando na variável global
-            mouse.posx = e.pageX;
-            mouse.posy = e.pageY;
+            global.mapArea = new MapArea(e.pageX, e.pageY);
 
             // Se o mouse estiver dentro da área que foi mapeada
-            if( map_area() ) {
+            if( global.mapArea ) {
                 // Posição do mouse dentro da área
-                area.mouse_posx = mouse.posx - area.posx;
-                area.mouse_posy = mouse.posy - area.posy;
+                var area_mouse_posx = e.pageX - area_posx;
+                var area_mouse_posy = e.pageY - area_posy;
 
                 // Pegar as porcentagens das posições do mouse dentro da área
-                area.mouse_posx_percent = Math.round(area.mouse_posx / area.width * 100);
-                area.mouse_posy_percent = Math.round(area.mouse_posy / area.width * 100);
+                var area_mouse_posx_percent = Math.round(area_mouse_posx / area_width * 100);
+                var area_mouse_posy_percent = Math.round(area_mouse_posy / area_width * 100);
 
                 // Mover a sobra da imagem até encostar na borda da área de movimento do mouse
-                img.each( function() {
-                    img.width = $(this).width();
-                    img.height = $(this).height();
-                    img.posx = $(this).offset().left;
-                    img.posy = $(this).offset().top;
-                    img.cssLeft = parseInt( $(this).css('left'));
-                    img.cssTop = parseInt( $(this).css('top'));
+                var _layer = layer;
+                _layer.each( function() {
+                    _layer.width = $(this).width();
+                    _layer.height = $(this).height();
+                    _layer.posx = $(this).offset().left;
+                    _layer.posy = $(this).offset().top;
+                    _layer.cssLeft = parseInt( $(this).css('left'));
+                    _layer.cssTop = parseInt( $(this).css('top'));
 
                     // Configurações para mover o objeto
-                    if( move.init().value ) {
+                    if(global.move) {
                         // Encontrar a área de sobra da imagem
-                        img.width_out = (area.width - img.width) + config.marginHoriz;
-                        img.height_out = (area.height - img.height) + config.marginVert;
+                        _layer.width_out = (area_width - _layer.width) + config.marginHoriz;
+                        _layer.height_out = (area_height - _layer.height) + config.marginVert;
 
                         // Quantos % vou mover a imagem de acordo com o movimento do mouse
-                        img.move_posx = img.width_out * (area.mouse_posx_percent / 100);
-                        img.move_posy = img.height_out * (area.mouse_posy_percent / 50);
+                        _layer.move_posx = _layer.width_out * (area_mouse_posx_percent / 100);
+                        _layer.move_posy = _layer.height_out * (area_mouse_posy_percent / 50);
                                                 
                         // Mover a imagem até a posição do mouse levemente
                         $(this).animate({
-                            left: img.move_posx + 'px',
-                            top: img.move_posy + 'px',
+                            left: _layer.move_posx + 'px',
+                            top: _layer.move_posy + 'px',
                         }, {
                             duration: 50,
                             queue: false,
